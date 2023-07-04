@@ -1,0 +1,17 @@
+.head-cell {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  // padding: 10px 20px 10px 10px;
+  font-weight: 700;
+  position: relative;
+  // cursor: pointer;
+}
+
+.search-input {
+  width: 100%;
+}
+
+.icon {
+  max-width: 20px;
+}

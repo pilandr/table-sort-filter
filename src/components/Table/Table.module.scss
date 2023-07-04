@@ -1,0 +1,29 @@
+.container {
+  .table-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 1200px;
+  }
+
+  .title {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .table {
+    margin: 0 auto;
+  }
+
+  .table-list {
+    display: grid;
+    // grid-template-columns: repeat(9, minmax(max-content, 350px));
+    grid-template-columns:
+      48px minmax(58px, max-content) repeat(
+        2,
+        minmax(125px, max-content)
+      )
+      minmax(82px, max-content) repeat(4, minmax(max-content, 350px));
+    list-style: none;
+    padding: 0 20px;
+  }
+}

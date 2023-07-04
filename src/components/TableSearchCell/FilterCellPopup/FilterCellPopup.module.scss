@@ -1,0 +1,53 @@
+.filter-icon {
+  &-active {
+    color: #66a0d6;
+  }
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.filter-settings {
+  display: none;
+  position: absolute;
+  width: 400px;
+  padding: 5px;
+  background-color: #ddd;
+  border: 1px solid #999;
+  z-index: 1;
+
+  &-is-open {
+    display: block;
+  }
+
+  .filter-list {
+    display: flex;
+    flex-direction: column;
+    color: #ccc;
+    list-style: none;
+    margin: 0 0 10px 0;
+    overflow: scroll;
+    gap: 0.2rem;
+    height: 200px;
+    border: 1px solid #999;
+    padding: 5px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .button {
+    padding: 4px 6px;
+    cursor: pointer;
+    min-width: 60px;
+    border-radius: 2px;
+
+    &:hover {
+      background-color: #66a0d6;
+    }
+  }
+}

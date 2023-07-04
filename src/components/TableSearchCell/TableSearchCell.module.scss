@@ -1,0 +1,18 @@
+.head-cell {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  font-weight: 700;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding-right: 15px;
+}
+
+.filter-button {
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
+}
