@@ -42,7 +42,6 @@ export interface FilterData {
 }
 
 export type TableMainDataKey = keyof TableMainData;
-// export type FilterDataKey = keyof FilterData;
 
 export type TableState = {
   tableData: TableData[];

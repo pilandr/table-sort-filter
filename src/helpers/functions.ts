@@ -47,13 +47,16 @@ export const getInputSearchString = (
   }
 };
 
-export const getFieldsName = (): TableMainDataKey[] => [
-  "userId",
-  "first_name",
-  "last_name",
-  "age",
-  "job_title",
-  "email",
-  "ssn",
-  "work_start",
+export const fieldsNames: {
+  name: TableMainDataKey;
+  nameColumn: string;
+}[] = [
+  { name: "userId", nameColumn: "#" },
+  { name: "first_name", nameColumn: "First Name" },
+  { name: "last_name", nameColumn: "Last Name" },
+  { name: "age", nameColumn: "Age" },
+  { name: "job_title", nameColumn: "Job Title" },
+  { name: "email", nameColumn: "Email" },
+  { name: "ssn", nameColumn: "SSN" },
+  { name: "work_start", nameColumn: "Work Start" },
 ];

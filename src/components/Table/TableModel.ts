@@ -7,7 +7,7 @@ import {
   SearchData,
   FilterData,
 } from "./Table.types";
-import { getString, getFieldsName } from "helpers/functions";
+import { getString, fieldsNames } from "helpers/functions";
 
 export class TableModel {
   constructor(
@@ -168,14 +168,14 @@ export class TableModel {
 
   setStartAllFilterValues(tableData?: TableData[]) {
     let filterData: FilterData = {};
-    getFieldsName().forEach((name) => {
+    fieldsNames.forEach((field) => {
       filterData = {
         ...filterData,
-        [name]: this.getUniqueStringValues(
-          name,
+        [field.name]: this.getUniqueStringValues(
+          field.name,
           false,
           tableData ?? undefined,
-        ).map((item) => item[name]),
+        ).map((item) => item[field.name]),
       };
     });
     this.setFilterData(filterData);

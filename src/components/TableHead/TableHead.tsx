@@ -3,6 +3,7 @@ import cn from "classnames";
 
 import { ITableHeadProps } from "./TableHead.types";
 import { TableMainDataKey } from "components/Table/Table.types";
+import { fieldsNames } from "helpers/functions";
 
 import styles from "./TableHead.module.scss";
 
@@ -46,14 +47,13 @@ const TableHead: React.FunctionComponent<ITableHeadProps> = memo(
         >
           &#9733;
         </li>
-        <Cell nameColumn="#" nameSort="userId" />
-        <Cell nameColumn="First Name" nameSort="first_name" />
-        <Cell nameColumn="Last Name" nameSort="last_name" />
-        <Cell nameColumn="Age" nameSort="age" />
-        <Cell nameColumn="Job Title" nameSort="job_title" />
-        <Cell nameColumn="Email" nameSort="email" />
-        <Cell nameColumn="SSN" nameSort="ssn" />
-        <Cell nameColumn="Work Start" nameSort="work_start" />
+        {fieldsNames.map((field) => (
+          <Cell
+            nameColumn={field.nameColumn}
+            nameSort={field.name}
+            key={field.name}
+          />
+        ))}
       </>
     );
   },
