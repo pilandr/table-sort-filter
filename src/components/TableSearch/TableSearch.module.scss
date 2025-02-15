@@ -1,11 +1,11 @@
+@import "styles/colors";
+
 .head-cell {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
-  // padding: 10px 20px 10px 10px;
+  border: 1px solid $border-color;
   font-weight: 700;
   position: relative;
-  // cursor: pointer;
 }
 
 .search-input {

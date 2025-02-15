@@ -1,3 +1,5 @@
+@import "styles/colors";
+
 .field {
   &-favorite {
     display: flex;
@@ -9,7 +11,7 @@
 li {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
+  border: 1px solid $border-color;
   padding: 4px;
   font-weight: 400;
 }

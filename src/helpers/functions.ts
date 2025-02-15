@@ -60,3 +60,16 @@ export const fieldsNames: {
   { name: "ssn", nameColumn: "SSN" },
   { name: "work_start", nameColumn: "Work Start" },
 ];
+
+export function debounce<T extends any[]>(
+  func: (...args: T) => void,
+  delay: number,
+) {
+  let timeoutId: NodeJS.Timeout;
+  return function (...args: T) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+}

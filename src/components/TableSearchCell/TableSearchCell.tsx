@@ -1,8 +1,12 @@
-import React, { useState, useTransition, memo } from "react";
+import React, { useState, memo, useCallback } from "react";
 
 import { ITableSearchCellProps } from "./TableSearchCell.types";
 import { TableMainDataKey } from "components/Table/Table.types";
-import { getString, getInputSearchString } from "helpers/functions";
+import {
+  getString,
+  getInputSearchString,
+  debounce,
+} from "helpers/functions";
 import { FilterCellPopup } from "./FilterCellPopup";
 import { IFilterCellPopupProps } from "./FilterCellPopup/FilterCellPopup.types";
 import withClickOutside from "components/WithClickOutside/withClickOutside";
@@ -17,8 +21,18 @@ const TableSearchCell: React.FunctionComponent<ITableSearchCellProps> =
     const searchFields = model.state.searchFields;
 
     const [value, setValue] = useState(searchFields);
-    const [, startTransition] = useTransition();
     const [isOpenFilter, setIsOpenFilter] = useState(false);
+
+    const debouncedFetch = useCallback(
+      debounce((value: string) => {
+        model.setSearchFields({
+          ...searchFields,
+          focusField: nameSort,
+          [nameSort]: value,
+        });
+      }, 500),
+      [],
+    );
 
     const onChangeSearchInput = (
       e: React.FormEvent<HTMLInputElement>,
@@ -28,20 +42,16 @@ const TableSearchCell: React.FunctionComponent<ITableSearchCellProps> =
         e.currentTarget.value,
         nameSort,
       );
+
       if (value === searchFields[nameSort]) {
         return;
       }
+
       setValue({
         ...searchFields,
         [nameSort]: value,
       });
-      startTransition(() => {
-        model.setSearchFields({
-          ...searchFields,
-          focusField: nameSort,
-          [nameSort]: value,
-        });
-      });
+      debouncedFetch(value);
     };
 
     return (

@@ -1,61 +1,44 @@
-import React, { useEffect, useState, memo, useReducer } from "react";
+import React, { useEffect, useState, memo } from "react";
 
-import { request } from "helpers/request";
-import { RequestData } from "./Table.types";
 import { TableRow } from "components/TableRow";
 import { TableHead } from "components/TableHead";
 import { TableSearch } from "components/TableSearch";
-import { tableReducer, tableInitialState } from "./Table.reducer";
 import { TableModel } from "./TableModel";
 import { Spinner } from "components/Spinner";
+import { useTableData, useTableActions } from "hooks/tableStateHooks";
+import { BuilderTable } from "models/tableBuilder";
+import { SortIndicator } from "components/SortIndicator/SortIndicator";
 
 import styles from "./Table.module.scss";
 
 export const Table = memo(() => {
-  const [state, dispatch] = useReducer(
-    tableReducer,
-    tableInitialState,
-  );
-  const [model] = useState(() => new TableModel(state, dispatch));
-  const [noDataMessage, setNoDataMessage] = useState("");
+  const actions = useTableActions();
+  const state = useTableData();
+  const [model] = useState(() => new TableModel(state, actions));
   model.setState(state);
 
+  const tableBuilder = new BuilderTable(state);
+  tableBuilder.buildSortAndFilters();
+
   useEffect(() => {
-    request<RequestData[]>(
-      `https://my.api.mockaroo.com/users.json?key=${process.env.REACT_APP_MOCKAROO_KEY}`,
-    )
-      .then((data) => {
-        const table = data.map((item, index) => {
-          const timestamp = Date.parse(item.work_start ?? "");
-          const dateObject = timestamp ? new Date(timestamp) : null;
-          return {
-            ...item,
-            work_start: dateObject,
-            isFiltered: false,
-            id: index,
-          };
-        });
-        model.setTableData(table);
-        model.setStartAllFilterValues(table);
-      })
-      .catch(() => setNoDataMessage("Error"));
+    model.getTableData();
   }, []);
 
-  if (state.tableData.length === 0 && !noDataMessage) {
+  if (state.isLoading) {
     return <Spinner />;
   }
 
-  if (noDataMessage) {
-    return <>{noDataMessage}</>;
+  if (state.noDataMessage) {
+    return <div>{state.noDataMessage}</div>;
   }
 
   return (
     <div className={styles["container"]}>
+      <SortIndicator />
       <div className={styles["table-container"]}>
         <div className={styles["table"]}>
           <ul className={styles["table-list"]} data-name="table-list">
             <TableHead
-              key={`Header_${Math.random()}`}
               setSortDirection={() =>
                 model.setIsSortDirectionUp(!state.isSortDirectionUp)
               }
@@ -63,22 +46,16 @@ export const Table = memo(() => {
               setSortField={model.handleSortField}
               sortField={state.sortField}
             />
-            <TableSearch
-              key={`Search_${Math.random()}`}
-              model={model}
-            />
-            {model
-              .getSortData()
-              .sort((a, b) => (a.isFiltered <= b.isFiltered ? 1 : -1))
-              .map((dataRow, index) => (
-                <TableRow
-                  rowData={dataRow}
-                  key={`row_${index}`}
-                  setFavoriteValue={() =>
-                    model.setFavoriteValue(dataRow.id)
-                  }
-                />
-              ))}
+            <TableSearch model={model} />
+            {tableBuilder.getTable().map((dataRow, index) => (
+              <TableRow
+                rowData={dataRow}
+                key={dataRow.id}
+                setFavoriteValue={() =>
+                  model.setFavoriteValue(dataRow.id)
+                }
+              />
+            ))}
           </ul>
         </div>
       </div>

@@ -1,16 +1,26 @@
+@import "styles/colors";
+
 .head-cell {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
+  border: 1px solid $border-color;
   padding: 10px 20px 10px 10px;
   font-weight: 700;
   position: relative;
   cursor: pointer;
 
+  &:hover {
+    border: 1px solid $primary-color;
+  }
+
   &-favorite {
     justify-content: center;
     cursor: auto;
     padding: 4px;
+
+    &:hover {
+      border: 1px solid $border-color;
+    }
   }
 }
 

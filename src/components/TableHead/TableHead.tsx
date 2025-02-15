@@ -4,6 +4,7 @@ import cn from "classnames";
 import { ITableHeadProps } from "./TableHead.types";
 import { TableMainDataKey } from "components/Table/Table.types";
 import { fieldsNames } from "helpers/functions";
+import { sortObserver } from "models/subscriber";
 
 import styles from "./TableHead.module.scss";
 
@@ -12,30 +13,8 @@ const TableHead: React.FunctionComponent<ITableHeadProps> = memo(
     const handleClick = (nameField: TableMainDataKey) => {
       setSortDirection();
       setSortField(nameField);
+      sortObserver.notify(nameField);
     };
-
-    const Cell = ({
-      nameColumn,
-      nameSort,
-    }: {
-      nameColumn: string;
-      nameSort: TableMainDataKey;
-    }) => (
-      <li
-        className={styles["head-cell"]}
-        onClick={() => handleClick(nameSort)}
-      >
-        {nameColumn}
-        <img
-          src="./triangle-down.svg"
-          alt="triangle"
-          className={cn(styles["icon-triangle"], {
-            [styles["icon-triangle-up"]]: sortDirection,
-            [styles["icon-triangle-visible"]]: sortField === nameSort,
-          })}
-        />
-      </li>
-    );
 
     return (
       <>
@@ -48,11 +27,22 @@ const TableHead: React.FunctionComponent<ITableHeadProps> = memo(
           &#9733;
         </li>
         {fieldsNames.map((field) => (
-          <Cell
-            nameColumn={field.nameColumn}
-            nameSort={field.name}
+          <li
+            className={styles["head-cell"]}
+            onClick={() => handleClick(field.name)}
             key={field.name}
-          />
+          >
+            {field.nameColumn}
+            <img
+              src="./triangle-down.svg"
+              alt="triangle"
+              className={cn(styles["icon-triangle"], {
+                [styles["icon-triangle-up"]]: sortDirection,
+                [styles["icon-triangle-visible"]]:
+                  sortField === field.name,
+              })}
+            />
+          </li>
         ))}
       </>
     );

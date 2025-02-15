@@ -1,7 +1,9 @@
+@import "styles/colors";
+
 .head-cell {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
+  border: 1px solid $border-color;
   font-weight: 700;
   position: relative;
 }

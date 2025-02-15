@@ -1,97 +1,49 @@
 import {
-  TableActionTypes,
-  TableState,
-  TableStateActions,
   TableData,
   TableMainDataKey,
   SearchData,
   FilterData,
 } from "./Table.types";
-import { getString, fieldsNames } from "helpers/functions";
+import { TableState } from "store/tableDataSlice";
+import { fieldsNames } from "helpers/functions";
+import { TableActionsType } from "hooks/tableStateHooks";
 
 export class TableModel {
-  constructor(
-    state: TableState,
-    dispatch: React.Dispatch<TableStateActions>,
-  ) {
-    this.dispatch = dispatch;
+  constructor(state: TableState, actions: TableActionsType) {
+    this.actions = actions;
     this.state = state;
   }
 
   state: TableState;
-  dispatch: React.Dispatch<TableStateActions>;
+  actions: TableActionsType;
+
+  async getTableData() {
+    this.actions.fetchTableData();
+  }
 
   setState(state: TableState) {
     this.state = state;
   }
 
   setTableData(data: TableData[]) {
-    this.dispatch({
-      type: TableActionTypes.SET_TABLE_DATA,
-      payload: data,
-    });
+    this.actions.setTableData(data);
   }
 
   setSortField(data: TableMainDataKey) {
-    this.dispatch({
-      type: TableActionTypes.SET_SORT_FIELD,
-      payload: data,
-    });
+    this.actions.setSortField(data);
   }
 
   setIsSortDirectionUp(data: boolean) {
-    this.dispatch({
-      type: TableActionTypes.SET_SORT_DIRECTION,
-      payload: data,
-    });
+    this.actions.setSortDirection(data);
   }
 
   setSearchFields(data: SearchData) {
-    this.dispatch({
-      type: TableActionTypes.SET_SEARCH_FIELDS,
-      payload: data,
-    });
+    this.actions.setSearchFields(data);
   }
 
   setFilterData(data: FilterData) {
-    this.dispatch({
-      type: TableActionTypes.SET_FILTER_DATA,
-      payload: data,
-    });
+    this.actions.setFilterData(data);
   }
-
-  getSortData = () => {
-    const tableData = this.state.tableData;
-    const sortField = this.state.sortField;
-    const isSortDirectionUp = this.state.isSortDirectionUp;
-    const searchFields = this.state.searchFields;
-
-    let changedTable = tableData;
-    changedTable = tableData.sort((firstItem, secondItem) =>
-      (firstItem[sortField] ?? "") > (secondItem[sortField] ?? "")
-        ? isSortDirectionUp
-          ? 1
-          : -1
-        : isSortDirectionUp
-        ? -1
-        : 1,
-    );
-
-    Object.entries(searchFields).forEach((search) => {
-      if (search[0] === "focusField" || !search[1]) {
-        return;
-      }
-      changedTable = changedTable.filter((item) =>
-        getString(item[search[0] as TableMainDataKey])
-          .toLowerCase()
-          .includes(search[1].toLowerCase()),
-      );
-    });
-
-    changedTable = this.applyFilter(changedTable);
-
-    return changedTable;
-  };
 
   applyFilter(table: TableData[]) {
     let tableData = table;
@@ -102,7 +54,7 @@ export class TableModel {
       }
       const field = filter[0] as TableMainDataKey;
       tableData = tableData.filter((item) =>
-        filter[1].includes(item[field]),
+        filter[1].includes(item[field] as string),
       );
     });
     return tableData;

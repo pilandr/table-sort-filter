@@ -1,6 +1,8 @@
+@import "styles/colors";
+
 .filter-icon {
   &-active {
-    color: #66a0d6;
+    color: $primary-color;
   }
 
   svg {
@@ -14,8 +16,8 @@
   position: absolute;
   width: 400px;
   padding: 5px;
-  background-color: #ddd;
-  border: 1px solid #999;
+  background-color: $form-background-color;
+  border: 1px solid $border-color;
   z-index: 1;
 
   &-is-open {
@@ -25,13 +27,13 @@
   .filter-list {
     display: flex;
     flex-direction: column;
-    color: #ccc;
+    color: $border-color;
     list-style: none;
     margin: 0 0 10px 0;
     overflow: scroll;
     gap: 0.2rem;
     height: 200px;
-    border: 1px solid #999;
+    border: 1px solid $border-color;
     padding: 5px;
   }
 
@@ -45,9 +47,10 @@
     cursor: pointer;
     min-width: 60px;
     border-radius: 2px;
+    border: none;
 
     &:hover {
-      background-color: #66a0d6;
+      background-color: $primary-color;
     }
   }
 }

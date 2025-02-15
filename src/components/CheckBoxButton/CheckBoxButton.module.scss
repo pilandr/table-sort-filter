@@ -8,7 +8,7 @@
   font-size: 16px;
   line-height: 19px;
   font-weight: 400;
-  color: $black;
+  color: $text-color;
   user-select: none;
 
   .checkmark {
@@ -16,8 +16,8 @@
     height: 20px;
     width: 20px;
     flex-shrink: 0;
-    border: 1px solid $light-silver;
-    background: $white;
+    border: 1px solid $border-color;
+    background: $brand-color;
   }
 
   .checkmark:after {
@@ -41,9 +41,9 @@
   }
 
   &:hover {
-    color: $picton-blue;
+    color: $primary-color;
     .checkmark {
-      border: 1px solid $picton-blue;
+      border: 1px solid $primary-color;
     }
   }
 }
